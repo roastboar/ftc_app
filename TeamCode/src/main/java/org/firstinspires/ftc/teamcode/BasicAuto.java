@@ -65,7 +65,7 @@ public class BasicAuto extends LinearOpMode
         robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-=
+        
         waitForStart();
 
         //testColor(5000);
