@@ -93,10 +93,15 @@ public class RobotHWMap {
         colorServo = hwMap.get(Servo.class, "colorServo");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
 
-        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);  //makes robot go forward
-        motorFrontRight.setDirection(DcMotor.Direction.REVERSE); //makes robot go forward
-        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);   //makes robot go forward
-        motorBackRight.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
+//        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);  //makes robot go forward
+//        motorFrontRight.setDirection(DcMotor.Direction.REVERSE); //makes robot go forward
+//        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);   //makes robot go forward
+//        motorBackRight.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
+
+        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
+        motorFrontRight.setDirection(DcMotor.Direction.FORWARD); //makes robot go forward
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);   //makes robot go forward
+        motorBackRight.setDirection(DcMotor.Direction.FORWARD);  //makes robot go forward
 
         // Set all motors to zero power
         motorFrontLeft.setPower(0);
@@ -120,9 +125,9 @@ public class RobotHWMap {
 //        rightClaw.setPosition(0.57);
 //        jewelServo.setPosition(0.65);
 //
-//        // Define color sensor
-//        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
-//        colorSensor.enableLed(true);
+        // Define color sensor
+        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+        colorSensor.enableLed(true);
     }
 
     // Define and initialize ALL installed servos.
