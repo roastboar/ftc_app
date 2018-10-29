@@ -125,6 +125,8 @@ public class RobotHWMap {
 //        rightClaw.setPosition(0.57);
 //        jewelServo.setPosition(0.65);
 //
+        // Set color servo to retracted position
+        colorServo.setPosition(0.93);
         // Define color sensor
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
         colorSensor.enableLed(true);

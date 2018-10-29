@@ -47,7 +47,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public class BasicAuto extends LinearOpMode
 {
-
     /* Declare OpMode members. */
     RobotHWMap robot = new RobotHWMap();
 
@@ -55,93 +54,201 @@ public class BasicAuto extends LinearOpMode
     public void runOpMode()
     {
         robot.init(hardwareMap);
+        robot.colorServo.setPosition(0.60);
 
+        ResetEncoders();
+
+        waitForStart();
+
+        // descend the robot
+        // to be done later to avoid burning the rack and pinion gear
+
+        // disengage the robot from the central lander
+        NewStrafeRight(4);
+        sleep(1000);
+
+        // drive forward till we reach the minerals
+        NewDriveForward(17.5);
+        sleep(1000);
+
+        // strafe to get to the first mineral
+        NewStrafeRight(11);
+        sleep(1000);
+
+        boolean GoldMineralSeen = false;
+        for (int i=0; i<2;i++)
+        {
+            if (GoldMineralSeen == false && !IsWhiteMineral()) {
+                GoldMineralSeen = true;
+                NewDriveForward(6);
+                sleep(1000);
+                NewDriveBackward(6);
+            }
+            sleep(1000);
+            NewStrafeLeft(12);
+        }
+
+        robot.colorServo.setPosition(0.93);
+    }
+
+    // Encoders measure the amount that the axle on the motor has spun in a unit called 'ticks'.
+    // Each model of motor has a slightly different amount of ticks in a full rotation. By knowing
+    // the size of your wheel and by tracking the amount of ticks your motor has counted, you can
+    // get your distance traveled.
+
+    // For example, if I have a wheel with a diameter of 4 inches, I know that every full rotation
+    // of the wheel will cause me to travel a distance of 12.56 inches (circumference=diameter*pi).
+    // If my motor has 1440 ticks in a rotation, then each tick is 0.00872664625 inches (12.56/1440)
+    // If I want the robot to travel 6 inches, then I tell it to travel for 687 ticks (6/0.0087)
+
+    // Gear reductions just change the amount of ticks per rotation. If I have a 2:1 gear reduction,
+    // then it now takes my 1440 tick/rotation motor 2880 ticks to complete a rotation which would
+    // then be used above..
+
+    public int InchesToTicks(double inches)
+    {
+        // Our wheels are 4"
+        // One rotation will result in a travel of 12.56 inches.
+        // (circumference=diameter*pi)
+
+        // Neverest has 1120 ticks per rotation
+        return (int) (inches/(12.56/1120));
+    }
+
+    public void ResetEncoders()
+    {
         robot.motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        /*
         robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
-        waitForStart();
+        */
 
-        //testColor(5000);
-        strafeLeft(1,1000);
-        sleep(500);
-        strafeRight(1,1000);
-        //driveForward(1, 4000);
-        //turnLeft(1,500);
+        robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    // jewel knocker on RED ALLIANCE
-    public void testColor(double holdTime)
+    public void WaitForMotors()
     {
-        ElapsedTime holdTimer = new ElapsedTime();
-        holdTimer.reset();
-
-        while (opModeIsActive() && holdTimer.seconds() < holdTime)
+        while(
+                (robot.motorFrontLeft.isBusy() &&
+                 robot.motorFrontRight.isBusy() &&
+                 robot.motorBackLeft.isBusy() &&
+                 robot.motorBackRight.isBusy()
+                ) && opModeIsActive())
         {
-            // mount color sensor on front of jewel arm
-            //if ((robot.colorSensor.red() >= 154) && (robot.colorSensor.green() >= 205) && (robot.colorSensor.blue() >= 50 && robot.colorSensor.blue() <= 224))
-            //{
-              //  driveForward(1,1000);
-            //}
-
-            if (robot.colorSensor.blue() < 30 && robot.colorSensor.blue() > 15)
-            {
-                driveForward(0.4,1000);
-            }
-            telemetry.addData("Red", robot.colorSensor.red());
-            telemetry.addData("Green", robot.colorSensor.green());
-            telemetry.addData("Blue", robot.colorSensor.blue());
-            telemetry.update();
+            // nothing
         }
     }
 
-    public void driveForward(double power, long holdTime)
+    public void SetMotorPower(int value)
     {
-        robot.motorFrontLeft.setPower(power);
-        robot.motorFrontRight.setPower(power);
-        robot.motorBackLeft.setPower(power);
-        robot.motorBackRight.setPower(power);
-        sleep(holdTime);
+        robot.motorFrontLeft.setPower(value);
+        robot.motorFrontRight.setPower(value);
+        robot.motorBackLeft.setPower(value);
+        robot.motorBackRight.setPower(value);
     }
 
-    public void strafeLeft(double power, long holdTime)
+    public void NewStrafeLeft(double inches)
     {
-        robot.motorFrontLeft.setPower(-power);
-        robot.motorFrontRight.setPower(power);
-        robot.motorBackLeft.setPower(power);
-        robot.motorBackRight.setPower(-power);
-        sleep(holdTime);
+        int Ticks;
+
+        // for strafing, compensate for the error
+        inches *= 1.2;
+
+        Ticks = InchesToTicks(inches);
+
+        ResetEncoders();
+
+        robot.motorFrontLeft.setTargetPosition(-Ticks);
+        robot.motorFrontRight.setTargetPosition(Ticks);
+        robot.motorBackLeft.setTargetPosition(Ticks);
+        robot.motorBackRight.setTargetPosition(-Ticks);
+
+        SetMotorPower(1);
+        WaitForMotors();
+        SetMotorPower(0);
+
+        return;
     }
 
-    public void strafeRight(double power, long holdTime)
+    public void NewStrafeRight(double inches)
     {
-        strafeLeft(-power, holdTime);
+        NewStrafeLeft(-inches);
     }
 
-    public void stopDriving()
+    public void NewDriveForward(double inches)
     {
-        driveForward(0,1);
+        int Ticks = InchesToTicks(inches);
+        ResetEncoders();
+
+        robot.motorFrontLeft.setTargetPosition(Ticks);
+        robot.motorFrontRight.setTargetPosition(Ticks);
+        robot.motorBackLeft.setTargetPosition(Ticks);
+        robot.motorBackRight.setTargetPosition(Ticks);
+
+        SetMotorPower(1);
+        WaitForMotors();
+        SetMotorPower(0);
     }
 
-    public void turnLeft(double power, long holdTime)
+    public void NewDriveBackward(double inches)
     {
-        robot.motorFrontLeft.setPower(-power);
-        robot.motorFrontRight.setPower(power);
-        robot.motorBackLeft.setPower(-power);
-        robot.motorBackRight.setPower(power);
-        sleep(holdTime);
+        NewDriveForward(-inches);
     }
 
-    public void turnRight(double power, long holdTime)
+    public void NewTurnLeft(double inches)
     {
-        turnLeft(-power, holdTime);
-        sleep(holdTime);
+        int Ticks = InchesToTicks(inches);
+        ResetEncoders();
+
+        robot.motorFrontLeft.setTargetPosition(-Ticks);
+        robot.motorFrontRight.setTargetPosition(Ticks);
+        robot.motorBackLeft.setTargetPosition(-Ticks);
+        robot.motorBackRight.setTargetPosition(Ticks);
+
+        SetMotorPower(1);
+        WaitForMotors();
+        SetMotorPower(0);
+    }
+
+    public void NewTurnRight(double inches)
+    {
+        NewTurnLeft(inches);
+    }
+
+    public boolean IsWhiteMineral()
+    {
+        /*
+        int threshold = 60;
+        if (robot.colorSensor.blue() > threshold &&
+                robot.colorSensor.green() > threshold &&
+                robot.colorSensor.blue() > threshold)
+        {
+            return true;
+        }*/
+        int alphaThreshold = 175;
+        if (robot.colorSensor.alpha() > alphaThreshold)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean IsGoldMineral()
+    {
+        if (robot.colorSensor.blue() < 30 && robot.colorSensor.blue() > 15)
+        {
+            return true;
+        }
+        return false;
     }
 }
 

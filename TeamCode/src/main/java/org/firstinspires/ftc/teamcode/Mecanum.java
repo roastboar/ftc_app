@@ -70,6 +70,29 @@ public class Mecanum extends LinearOpMode
             else {
                 robot.motorLift.setPower(0);
             }
+
+            if(gamepad1.a)
+            {
+                robot.colorServo.setPosition(0.93);
+            }
+            if(gamepad1.b)
+            {
+                robot.colorServo.setPosition(0.60);
+            }
+
+            telemetry.addData("Red", robot.colorSensor.red());
+            telemetry.addData("Green", robot.colorSensor.green());
+            telemetry.addData("Blue", robot.colorSensor.blue());
+            telemetry.addData( "alpha", robot.colorSensor.alpha());
+            telemetry.addData( "argb", robot.colorSensor.argb());
+            telemetry.update();
+
+            if(robot.colorSensor.blue() > 60 && robot.colorSensor.red() > 60 &&
+                    robot.colorSensor.green()> 60)
+            {
+                telemetry.addLine("White Mineral Found");
+                telemetry.update();
+            }
         }
     }
 }
