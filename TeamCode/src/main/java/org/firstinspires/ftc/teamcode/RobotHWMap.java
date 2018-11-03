@@ -58,7 +58,8 @@ public class RobotHWMap {
     public DcMotor motorFrontRight = null;
     public DcMotor motorBackLeft = null;
     public DcMotor motorBackRight = null;
-    public DcMotor motorLift = null;
+    public DcMotor motorArm = null;
+    public DcMotor motorExtend = null;
     public Servo colorServo = null;
     public ColorSensor colorSensor = null;
 //    public Servo jewelServo = null;
@@ -84,20 +85,17 @@ public class RobotHWMap {
         // Save reference to Hardware map
         hwMap = ahwMap;
 
-        // Define and Initialize Motors
+        // Define and initialize motors
         motorFrontLeft = hwMap.get(DcMotor.class, "motorFrontLeft");
         motorFrontRight = hwMap.get(DcMotor.class, "motorFrontRight");
         motorBackLeft = hwMap.get(DcMotor.class, "motorBackLeft");
         motorBackRight = hwMap.get(DcMotor.class, "motorBackRight");
-        motorLift = hwMap.get(DcMotor.class, "motorLift");
+        motorArm = hwMap.get(DcMotor.class, "motorArm");
+        motorExtend = hwMap.get(DcMotor.class,"motorExtend");
         colorServo = hwMap.get(Servo.class, "colorServo");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
 
-//        motorFrontLeft.setDirection(DcMotor.Direction.FORWARD);  //makes robot go forward
-//        motorFrontRight.setDirection(DcMotor.Direction.REVERSE); //makes robot go forward
-//        motorBackLeft.setDirection(DcMotor.Direction.FORWARD);   //makes robot go forward
-//        motorBackRight.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
-
+        // Set drive motors to appropriate directions
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
         motorFrontRight.setDirection(DcMotor.Direction.FORWARD); //makes robot go forward
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);   //makes robot go forward
@@ -108,6 +106,8 @@ public class RobotHWMap {
         motorFrontRight.setPower(0);
         motorBackLeft.setPower(0);
         motorBackRight.setPower(0);
+        motorArm.setPower(0);
+        motorExtend.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -115,16 +115,9 @@ public class RobotHWMap {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-//        // Define servos and set their position
-//        leftClaw  = hwMap.get(Servo.class, "leftClaw");
-//        rightClaw = hwMap.get(Servo.class, "rightClaw");
-//        jewelServo = hwMap.get(Servo.class, "jewelServo");
-//
-//        leftClaw.setPosition(0.08);
-//        rightClaw.setPosition(0.57);
-//        jewelServo.setPosition(0.65);
-//
         // Set color servo to retracted position
         colorServo.setPosition(0.93);
         // Define color sensor
