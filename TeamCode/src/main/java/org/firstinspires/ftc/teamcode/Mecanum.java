@@ -1,14 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.text.method.Touch;
+import android.view.View;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
 
 @TeleOp(name = "Mecanum")
 public class Mecanum extends LinearOpMode
@@ -56,20 +64,8 @@ public class Mecanum extends LinearOpMode
             robot.motorBackLeft.setPower(drive - strafe + rotate);
             robot.motorBackRight.setPower(drive + strafe - rotate);
 
-            if(gamepad1.left_bumper)
-            {
-                robot.motorLift.setPower(1);
-            }
-            else {
-                robot.motorLift.setPower(0);
-            }
-            if(gamepad1.right_bumper)
-            {
-                robot.motorLift.setPower(-1);
-            }
-            else {
-                robot.motorLift.setPower(0);
-            }
+            robot.motorArm.setPower(gamepad2.left_stick_y);
+            robot.motorExtend.setPower(gamepad2.right_stick_y);
 
             if(gamepad1.a)
             {
@@ -79,6 +75,8 @@ public class Mecanum extends LinearOpMode
             {
                 robot.colorServo.setPosition(0.60);
             }
+
+            /*
 
             telemetry.addData("Red", robot.colorSensor.red());
             telemetry.addData("Green", robot.colorSensor.green());
@@ -93,6 +91,55 @@ public class Mecanum extends LinearOpMode
                 telemetry.addLine("White Mineral Found");
                 telemetry.update();
             }
+            */
+            ColorSensor sensorColor;
+            DistanceSensor sensorDistance;
+            // hsvValues is an array that will hold the hue, saturation, and value information.
+            float hsvValues[] = {0F, 0F, 0F};
+
+            // values is a reference to the hsvValues array.
+            final float values[] = hsvValues;
+
+            // sometimes it helps to multiply the raw RGB values with a scale factor
+            // to amplify/attentuate the measured values.
+            final double SCALE_FACTOR = 255;
+
+            // get a reference to the RelativeLayout so we can change the background
+            // color of the Robot Controller app to match the hue detected by the RGB sensor.
+            int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+            final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+            // get a reference to the color sensor.
+            sensorColor = hardwareMap.get(ColorSensor.class, "colorSensor");
+
+            // get a reference to the distance sensor that shares the same name.
+            sensorDistance = hardwareMap.get(DistanceSensor.class, "colorSensor");
+
+            Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                    (int) (sensorColor.green() * SCALE_FACTOR),
+                    (int) (sensorColor.blue() * SCALE_FACTOR),
+                    hsvValues);
+
+            // send the info back to driver station using telemetry function.
+            telemetry.addData("Distance (cm)",
+                    String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Alpha", sensorColor.alpha());
+            telemetry.addData("Red  ", sensorColor.red());
+            telemetry.addData("Green", sensorColor.green());
+            telemetry.addData("Blue ", sensorColor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
+
+            // change the background color to match the color detected by the RGB sensor.
+            // pass a reference to the hue, saturation, and value array as an argument
+            // to the HSVToColor method.
+            relativeLayout.post(new Runnable() {
+                public void run() {
+                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+                }
+            });
+
+            telemetry.update();
+
         }
     }
 }
