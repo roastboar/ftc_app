@@ -56,14 +56,23 @@ public class BasicAuto extends LinearOpMode
     public void runOpMode()
     {
         robot.init(hardwareMap);
-        robot.colorServo.setPosition(0.60);
+
+        robot.colorServo.setPosition(0);
+
+        //robot.colorServo.setPosition(0.60);
 
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
 
+        // close the claw servo
+        robot.robotClaw.setPosition(0.8);
+
+        // set initial position for the color servo
+        robot.colorServo.setPosition(0.33);
+
         // descend the robot
-        // to be done later to avoid burning the rack and pinion gear
+        AutoHelper.DescendRobot(robot);
 
         // disengage the robot from the central lander
         AutoHelper.StrafeRight(robot, 4, 1000);
@@ -71,25 +80,27 @@ public class BasicAuto extends LinearOpMode
         // drive forward till we reach the minerals
         AutoHelper.DriveForward(robot, 16,1000);
 
+        // set the color servo to scan position
+        //robot.colorServo.setPosition(0);
+
         // strafe to get to the first mineral
-        AutoHelper.StrafeRight(robot, 11, 1000);
+        //AutoHelper.StrafeRight(robot, 11, 1000);
 
-        //while (opModeIsActive())
+        //AutoHelper.KnockOffGold(hardwareMap, robot, telemetry);
 
-        AutoHelper.KnockOffGold(hardwareMap, robot, telemetry);
+        // get to the end of the perimeter fence
+        AutoHelper.StrafeLeft(robot, 35, 1000);
 
- /*
-        boolean GoldMineralSeen = false;
-        for (int i=0; i<2;i++)
-        {
-            if (GoldMineralSeen == false && AutoHelper.IsGoldMineral(hardwareMap)) {
-                GoldMineralSeen = true;
-                AutoHelper.DriveForward(robot, 6, 1000);
-                AutoHelper.DriveBackward(robot, 6, 1000);
-            }
-            AutoHelper.StrafeLeft(robot, 12, 1000);
-        }
-*/
-        robot.colorServo.setPosition(0.93);
+        // turn so that you are aligned to the perimeter fence
+        AutoHelper.TurnRight(robot, 5, 1000);
+
+        // drive to the depot
+        AutoHelper.DriveForward(robot, 50, 1000);
+
+        // open the claw
+        robot.robotClaw.setPosition(0);
+
+        // drive to the crater
+        AutoHelper.DriveBackward(robot, 76, 1000);
     }
 }

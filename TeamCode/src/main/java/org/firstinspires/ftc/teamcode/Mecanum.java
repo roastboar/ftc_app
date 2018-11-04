@@ -64,8 +64,9 @@ public class Mecanum extends LinearOpMode
             robot.motorBackLeft.setPower(drive - strafe + rotate);
             robot.motorBackRight.setPower(drive + strafe - rotate);
 
-            robot.motorArm.setPower(gamepad2.left_stick_y);
-            robot.motorExtend.setPower(gamepad2.right_stick_y);
+            // robot.motorArm.setPower(gamepad2.left_stick_y);
+            // robot.motorExtend.setPower(gamepad2.right_stick_y);
+            robot.motorLift.setPower(gamepad2.left_stick_y);
 
             if(gamepad1.a)
             {
@@ -74,6 +75,14 @@ public class Mecanum extends LinearOpMode
             if(gamepad1.b)
             {
                 robot.colorServo.setPosition(0.60);
+            }
+            if(gamepad1.x)
+            {
+                robot.robotClaw.setPosition(1);
+            }
+            if(gamepad1.y)
+            {
+                robot.robotClaw.setPosition(0);
             }
 
             /*
