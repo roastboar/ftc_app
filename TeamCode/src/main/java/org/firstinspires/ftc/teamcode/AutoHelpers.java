@@ -8,12 +8,22 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.lang.Thread;
 import java.util.Locale;
+
+class ColorDistanceClass {
+    int Red;
+    int Green;
+    int Blue;
+    float Alpha;
+    float Hue;
+    double Distance;
+}
 
 public class AutoHelpers
 {
@@ -81,6 +91,23 @@ public class AutoHelpers
         robot.motorFrontRight.setPower(value);
         robot.motorBackLeft.setPower(value);
         robot.motorBackRight.setPower(value);
+    }
+
+    public void DescendRobot(RobotHWMap robot)
+    {
+        int Ticks;
+        double Inches = 6.5;
+
+        robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Ticks = InchesToTicks(Inches);
+        //robot.motorLift.setTargetPosition(Ticks);
+        robot.motorLift.setPower(-0.75);
+        //
+        // 4475 -- 4750
+        //
+        HelperSleep(4600);
+        robot.motorLift.setPower(0);
     }
 
     public void StrafeLeft(RobotHWMap Robot, double Inches, long SleepTime)
@@ -170,55 +197,57 @@ public class AutoHelpers
     {
         int i = 32;
         int StrafeUnit = 4;
+        ColorDistanceClass ColorDistance = new ColorDistanceClass();
 
         while (i>=0)
         {
-            // hsvValues is an array that will hold the hue, saturation, and value information.
-            float hsvValues[] = {0F, 0F, 0F};
-            int RGB[] = {0, 0, 0};
-            double distance;
+            int SleepTime = 500;
+            GetColorDistance(hardwareMap, ColorDistance);
 
-            distance = GetHSV(hardwareMap, hsvValues, RGB);
-            float hue = hsvValues[0];
+            PrintColorDistance(ColorDistance, telemetry);
 
-            PrintColorDistance(hsvValues, RGB, distance, telemetry);
-
-            if (distance == Float.NaN)
+            if (ColorDistance.Distance == Float.NaN)
             {
                 i-=StrafeUnit;
-                StrafeLeft(robot, StrafeUnit, 500);
+                StrafeLeft(robot, StrafeUnit, SleepTime);
             }
             else
             {
-                if (distance > 15)
+                if (ColorDistance.Distance > 15)
                 {
                     // we are far away
-                    DriveForward(robot, 1, 1000);
+                    DriveForward(robot, 1, SleepTime);
                 }
                 else
                 {
-                    if (hue <= 50)
+                    if (ColorDistance.Hue <= 50)
                     {
-                        DriveForward(robot, 6, 1000);
-                        DriveBackward(robot, 6, 1000);
+                        DriveForward(robot, 7, SleepTime);
+                        DriveBackward(robot, 9, SleepTime);
                         break;
                     }
                     else
                     {
                         i -= StrafeUnit;
-                        StrafeLeft(robot, StrafeUnit, 500);
+                        StrafeLeft(robot, StrafeUnit, SleepTime);
+                        //TurnRight(robot, 0.5, SleepTime);
+                        //DriveForward(robot, 0.5, SleepTime);
                     }
                 }
             }
         }
 
         StrafeLeft(robot, (i + 10), 1000);
+        TurnRight(robot, 4, 1000);
     }
 
-    private double GetHSV(HardwareMap hardwareMap, float []hsvValues, int []RGB)
+    private void GetColorDistance(HardwareMap hardwareMap, ColorDistanceClass ColorDistance)
     {
         ColorSensor sensorColor;
         DistanceSensor sensorDistance;
+
+        // hsvValues is an array that will hold the hue, saturation, and value information.
+        float hsvValues[] = {0F, 0F, 0F};
 
         // values is a reference to the hsvValues array.
         final float values[] = hsvValues;
@@ -252,26 +281,25 @@ public class AutoHelpers
             }
         });
 
-        RGB[0] = (int) (sensorColor.red() * SCALE_FACTOR);
-        RGB[1] = (int) (sensorColor.green() * SCALE_FACTOR);
-        RGB[2] = (int) (sensorColor.blue() * SCALE_FACTOR);
-
-        return sensorDistance.getDistance(DistanceUnit.CM);
+        ColorDistance.Hue = hsvValues[0];
+        ColorDistance.Alpha = sensorColor.alpha();
+        ColorDistance.Red = (int) (sensorColor.red() * SCALE_FACTOR);
+        ColorDistance.Green = (int) (sensorColor.green() * SCALE_FACTOR);
+        ColorDistance.Blue = (int) (sensorColor.blue() * SCALE_FACTOR);
+        ColorDistance.Distance = sensorDistance.getDistance(DistanceUnit.CM);
     }
 
-    public void PrintColorDistance(float []hsvValues, int [] RGB, double distance, Telemetry telemetry)
+    public void PrintColorDistance(ColorDistanceClass ColorDistance, Telemetry telemetry)
     {
         // send the info back to driver station using telemetry function.
         telemetry.addData("Distance (cm)",
-                String.format(Locale.US, "%.02f", distance));
+                String.format(Locale.US, "%.02f", ColorDistance.Distance));
 
-        telemetry.addData("distance real", distance);
-
-        //telemetry.addData("Alpha", sensorColor.alpha());
-        telemetry.addData("Red  ", RGB[0]);
-        telemetry.addData("Green", RGB[1]);
-        telemetry.addData("Blue ", RGB[2]);
-        telemetry.addData("Hue", hsvValues[0]);
+        telemetry.addData("Alpha", ColorDistance.Alpha);
+        telemetry.addData("Red  ", ColorDistance.Red);
+        telemetry.addData("Green", ColorDistance.Green);
+        telemetry.addData("Blue ", ColorDistance.Blue);
+        telemetry.addData("Hue", ColorDistance.Hue);
 
         telemetry.update();
     }
