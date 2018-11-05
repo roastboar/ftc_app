@@ -68,7 +68,7 @@ public class Mecanum extends LinearOpMode
             // robot.motorExtend.setPower(gamepad2.right_stick_y);
             robot.motorLift.setPower(gamepad2.left_stick_y);
 
-            if(gamepad1.a)
+            /*if(gamepad1.a)
             {
                 robot.colorServo.setPosition(0.93);
             }
@@ -101,6 +101,7 @@ public class Mecanum extends LinearOpMode
                 telemetry.update();
             }
             */
+            /*
             ColorSensor sensorColor;
             DistanceSensor sensorDistance;
             // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -149,6 +150,6 @@ public class Mecanum extends LinearOpMode
 
             telemetry.update();
 
-        }
+        }*/
     }
-}
+}}

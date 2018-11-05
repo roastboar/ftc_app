@@ -57,7 +57,9 @@ public class BasicAuto extends LinearOpMode
     {
         robot.init(hardwareMap);
 
-        robot.colorServo.setPosition(0);
+        //robot.colorServo.setPosition(0);
+        // close the claw servo
+        robot.robotClaw.setPosition(0.8);
 
         //robot.colorServo.setPosition(0.60);
 
@@ -66,10 +68,10 @@ public class BasicAuto extends LinearOpMode
         waitForStart();
 
         // close the claw servo
-        robot.robotClaw.setPosition(0.8);
+        //robot.robotClaw.setPosition(0.8);
 
         // set initial position for the color servo
-        robot.colorServo.setPosition(0.33);
+        //robot.colorServo.setPosition(0.33);
 
         // descend the robot
         AutoHelper.DescendRobot(robot);
@@ -89,10 +91,10 @@ public class BasicAuto extends LinearOpMode
         //AutoHelper.KnockOffGold(hardwareMap, robot, telemetry);
 
         // get to the end of the perimeter fence
-        AutoHelper.StrafeLeft(robot, 35, 1000);
+        AutoHelper.StrafeRight(robot, 35, 1000);
 
         // turn so that you are aligned to the perimeter fence
-        AutoHelper.TurnRight(robot, 5, 1000);
+        AutoHelper.TurnLeft(robot, 10, 1000);
 
         // drive to the depot
         AutoHelper.DriveForward(robot, 50, 1000);
@@ -101,6 +103,6 @@ public class BasicAuto extends LinearOpMode
         robot.robotClaw.setPosition(0);
 
         // drive to the crater
-        AutoHelper.DriveBackward(robot, 76, 1000);
+        AutoHelper.DriveBackward(robot, 81, 1000); //76 too short
     }
 }

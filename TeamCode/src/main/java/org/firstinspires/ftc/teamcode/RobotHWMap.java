@@ -60,9 +60,9 @@ public class RobotHWMap {
     public DcMotor motorBackRight = null;
  //   public DcMotor motorArm = null;
  //   public DcMotor motorExtend = null;
-    public Servo colorServo = null;
+    //public Servo colorServo = null;
     public Servo robotClaw = null;
-    public ColorSensor colorSensor = null;
+  //  public ColorSensor colorSensor = null;
     public DcMotor motorLift =  null;
 
 //    public Servo jewelServo = null;
@@ -95,8 +95,8 @@ public class RobotHWMap {
         motorBackRight = hwMap.get(DcMotor.class, "motorBackRight");
         //motorArm = hwMap.get(DcMotor.class, "motorArm");
         //motorExtend = hwMap.get(DcMotor.class,"motorExtend");
-        colorServo = hwMap.get(Servo.class, "colorServo");
-        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+        //colorServo = hwMap.get(Servo.class, "colorServo");
+      //  colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
         robotClaw = hwMap.get(Servo.class, "robotClaw");
         motorLift = hwMap.get(DcMotor.class, "motorLift");
 
@@ -129,10 +129,10 @@ public class RobotHWMap {
         motorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Set color servo to retracted position
-        colorServo.setPosition(0.93);
+        //colorServo.setPosition(0.93);
         // Define color sensor
-        colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
-        colorSensor.enableLed(true);
+      //  colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+       // colorSensor.enableLed(true);
     }
 
     // Define and initialize ALL installed servos.

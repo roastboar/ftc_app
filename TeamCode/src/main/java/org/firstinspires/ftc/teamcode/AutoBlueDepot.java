@@ -169,20 +169,20 @@ public class AutoBlueDepot extends LinearOpMode {
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
 
-        while (opModeIsActive() && holdTimer.seconds() < holdTime)
-        {
-            // mount color sensor on front of jewel arm
-            if (robot.colorSensor.blue() > 0 && robot.colorSensor.blue() > robot.colorSensor.red())
-            {
-                encoderDrive(TURN_SPEED, 4, -4, 2.0);
-                encoderDrive(TURN_SPEED, -4, 4, 2.0);
-            }
-            else if (robot.colorSensor.red() > 0 && robot.colorSensor.red() > robot.colorSensor.blue())
-            {
-                encoderDrive(TURN_SPEED, -4, 4, 2.0);
-                encoderDrive(TURN_SPEED, 4, -4, 2.0);
-            }
-        }
+//        while (opModeIsActive() && holdTimer.seconds() < holdTime)
+//        {
+//            // mount color sensor on front of jewel arm
+//            if (robot.colorSensor.blue() > 0 && robot.colorSensor.blue() > robot.colorSensor.red())
+//            {
+//                encoderDrive(TURN_SPEED, 4, -4, 2.0);
+//                encoderDrive(TURN_SPEED, -4, 4, 2.0);
+//            }
+//            else if (robot.colorSensor.red() > 0 && robot.colorSensor.red() > robot.colorSensor.blue())
+//            {
+//                encoderDrive(TURN_SPEED, -4, 4, 2.0);
+//                encoderDrive(TURN_SPEED, 4, -4, 2.0);
+//            }
+//        }
     }
 
 //    // function to set jewel arm down with enough time
