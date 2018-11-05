@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.DogeCV;
+import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -15,15 +18,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.lang.Thread;
 import java.util.Locale;
-
-class ColorDistanceClass {
-    int Red;
-    int Green;
-    int Blue;
-    float Alpha;
-    float Hue;
-    double Distance;
-}
 
 public class AutoHelpers
 {
@@ -193,114 +187,37 @@ public class AutoHelpers
         TurnLeft(robot, inches, SleepTime);
     }
 
-    public void KnockOffGold(HardwareMap hardwareMap, RobotHWMap robot, Telemetry telemetry)
+    public double GetGoldMineralPosition(HardwareMap hardwareMap, long SleepTime)
     {
-        int i = 32;
-        int StrafeUnit = 4;
-        ColorDistanceClass ColorDistance = new ColorDistanceClass();
+        GoldAlignDetector detector;
 
-        while (i>=0)
-        {
-            int SleepTime = 500;
-            GetColorDistance(hardwareMap, ColorDistance);
+        // telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
-            PrintColorDistance(ColorDistance, telemetry);
+        // Set up detector
+        detector = new GoldAlignDetector(); // Create detector
 
-            if (ColorDistance.Distance == Float.NaN)
-            {
-                i-=StrafeUnit;
-                StrafeLeft(robot, StrafeUnit, SleepTime);
-            }
-            else
-            {
-                if (ColorDistance.Distance > 15)
-                {
-                    // we are far away
-                    DriveForward(robot, 1, SleepTime);
-                }
-                else
-                {
-                    if (ColorDistance.Hue <= 50)
-                    {
-                        DriveForward(robot, 7, SleepTime);
-                        DriveBackward(robot, 9, SleepTime);
-                        break;
-                    }
-                    else
-                    {
-                        i -= StrafeUnit;
-                        StrafeLeft(robot, StrafeUnit, SleepTime);
-                        //TurnRight(robot, 0.5, SleepTime);
-                        //DriveForward(robot, 0.5, SleepTime);
-                    }
-                }
-            }
-        }
+        // Initialize it with the app context and camera
+        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
 
-        StrafeLeft(robot, (i + 10), 1000);
-        TurnRight(robot, 4, 1000);
-    }
+        detector.useDefaults(); // Set detector to use default settings
 
-    private void GetColorDistance(HardwareMap hardwareMap, ColorDistanceClass ColorDistance)
-    {
-        ColorSensor sensorColor;
-        DistanceSensor sensorDistance;
+        // Optional tuning
+        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
+        detector.downscale = 0.4; // How much to downscale the input frames
 
-        // hsvValues is an array that will hold the hue, saturation, and value information.
-        float hsvValues[] = {0F, 0F, 0F};
+        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
+        detector.maxAreaScorer.weight = 0.005; //
 
-        // values is a reference to the hsvValues array.
-        final float values[] = hsvValues;
+        detector.ratioScorer.weight = 5; //
+        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
-        // sometimes it helps to multiply the raw RGB values with a scale factor
-        // to amplify/attentuate the measured values.
-        final double SCALE_FACTOR = 255;
+        detector.enable(); // Start the detector!
 
-        // get a reference to the RelativeLayout so we can change the background
-        // color of the Robot Controller app to match the hue detected by the RGB sensor.
-        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+        // Sleep to allow it to calibrate
+        HelperSleep(SleepTime);
 
-        // get a reference to the color sensor.
-        sensorColor = hardwareMap.get(ColorSensor.class, "colorSensor");
-
-        // get a reference to the distance sensor that shares the same name.
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "colorSensor");
-
-        Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                (int) (sensorColor.green() * SCALE_FACTOR),
-                (int) (sensorColor.blue() * SCALE_FACTOR),
-                hsvValues);
-
-        // change the background color to match the color detected by the RGB sensor.
-        // pass a reference to the hue, saturation, and value array as an argument
-        // to the HSVToColor method.
-        relativeLayout.post(new Runnable() {
-            public void run() {
-                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-            }
-        });
-
-        ColorDistance.Hue = hsvValues[0];
-        ColorDistance.Alpha = sensorColor.alpha();
-        ColorDistance.Red = (int) (sensorColor.red() * SCALE_FACTOR);
-        ColorDistance.Green = (int) (sensorColor.green() * SCALE_FACTOR);
-        ColorDistance.Blue = (int) (sensorColor.blue() * SCALE_FACTOR);
-        ColorDistance.Distance = sensorDistance.getDistance(DistanceUnit.CM);
-    }
-
-    public void PrintColorDistance(ColorDistanceClass ColorDistance, Telemetry telemetry)
-    {
-        // send the info back to driver station using telemetry function.
-        telemetry.addData("Distance (cm)",
-                String.format(Locale.US, "%.02f", ColorDistance.Distance));
-
-        telemetry.addData("Alpha", ColorDistance.Alpha);
-        telemetry.addData("Red  ", ColorDistance.Red);
-        telemetry.addData("Green", ColorDistance.Green);
-        telemetry.addData("Blue ", ColorDistance.Blue);
-        telemetry.addData("Hue", ColorDistance.Hue);
-
-        telemetry.update();
+        return detector.getXPosition();
     }
 }

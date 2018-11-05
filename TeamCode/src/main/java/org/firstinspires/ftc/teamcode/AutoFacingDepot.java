@@ -30,23 +30,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-@Autonomous(name="Basic Auto")
+@Autonomous(name="Auto Facing Depot")
 
-public class BasicAuto extends LinearOpMode
+public class AutoFacingDepot extends LinearOpMode
 {
     /* Declare OpMode members. */
     RobotHWMap robot = new RobotHWMap();
@@ -57,11 +45,8 @@ public class BasicAuto extends LinearOpMode
     {
         robot.init(hardwareMap);
 
-        //robot.colorServo.setPosition(0);
         // close the claw servo
-        robot.robotClaw.setPosition(0.8);
-
-        //robot.colorServo.setPosition(0.60);
+        //robot.robotClaw.setPosition(0.8);
 
         AutoHelper.ResetEncoders(robot);
 
@@ -70,39 +55,49 @@ public class BasicAuto extends LinearOpMode
         // close the claw servo
         //robot.robotClaw.setPosition(0.8);
 
-        // set initial position for the color servo
-        //robot.colorServo.setPosition(0.33);
-
         // descend the robot
-        AutoHelper.DescendRobot(robot);
+        //AutoHelper.DescendRobot(robot);
+
+        double XPosition;
+        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 1000);
 
         // disengage the robot from the central lander
         AutoHelper.StrafeRight(robot, 4, 1000);
 
-        // drive forward till we reach the minerals
-        AutoHelper.DriveForward(robot, 16,1000);
-
-        // set the color servo to scan position
-        //robot.colorServo.setPosition(0);
-
-        // strafe to get to the first mineral
-        //AutoHelper.StrafeRight(robot, 11, 1000);
-
-        //AutoHelper.KnockOffGold(hardwareMap, robot, telemetry);
+        if (XPosition < 150)
+        {
+            // Left
+            AutoHelper.DriveForward(robot, 12, 1000);
+            AutoHelper.StrafeLeft(robot, 18, 1000);
+            AutoHelper.DriveForward(robot, 7, 1000);
+            AutoHelper.DriveBackward(robot, 9, 1000);
+        }
+        else if (XPosition >=150 && XPosition <=390)
+        {
+            // Center
+            AutoHelper.DriveForward(robot, 28, 1000);
+        }
+        else
+        {
+            AutoHelper.DriveForward(robot, 12, 1000);
+            AutoHelper.StrafeRight(robot, 18, 1000);
+            AutoHelper.DriveForward(robot, 7, 1000);
+            AutoHelper.DriveBackward(robot, 9, 1000);
+        }
 
         // get to the end of the perimeter fence
-        AutoHelper.StrafeRight(robot, 35, 1000);
+        //AutoHelper.StrafeRight(robot, 35, 1000);
 
         // turn so that you are aligned to the perimeter fence
-        AutoHelper.TurnLeft(robot, 10, 1000);
+        //AutoHelper.TurnLeft(robot, 10, 1000);
 
         // drive to the depot
-        AutoHelper.DriveForward(robot, 50, 1000);
+        //AutoHelper.DriveForward(robot, 50, 1000);
 
         // open the claw
         robot.robotClaw.setPosition(0);
 
         // drive to the crater
-        AutoHelper.DriveBackward(robot, 81, 1000); //76 too short
+        //AutoHelper.DriveBackward(robot, 81, 1000); //76 too short
     }
 }
