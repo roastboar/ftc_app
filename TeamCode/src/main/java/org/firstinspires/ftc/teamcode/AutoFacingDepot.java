@@ -59,30 +59,73 @@ public class AutoFacingDepot extends LinearOpMode
         //AutoHelper.DescendRobot(robot);
 
         double XPosition;
-        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 1000);
+        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
 
         // disengage the robot from the central lander
         AutoHelper.StrafeRight(robot, 4, 1000);
 
+        int DistanceToCubeTotal = 29;
+        int DistanceToCubeInitial = 12;
+        int DistanceToStrafe = 18;
+        int DistanceToBackoff = 19;
+
         if (XPosition < 150)
         {
             // Left
-            AutoHelper.DriveForward(robot, 12, 1000);
-            AutoHelper.StrafeLeft(robot, 18, 1000);
-            AutoHelper.DriveForward(robot, 7, 1000);
-            AutoHelper.DriveBackward(robot, 9, 1000);
+            AutoHelper.DriveForward(
+                    robot,
+                    DistanceToCubeInitial,
+                    1000);
+
+            AutoHelper.StrafeLeft(
+                    robot,
+                    DistanceToStrafe,
+                    1000);
+
+            AutoHelper.DriveForward(
+                    robot,
+                    DistanceToCubeTotal - DistanceToCubeInitial,
+                    1000);
+
+            AutoHelper.DriveBackward(
+                    robot,
+                    DistanceToBackoff,
+                    1000);
         }
         else if (XPosition >=150 && XPosition <=390)
         {
             // Center
-            AutoHelper.DriveForward(robot, 28, 1000);
+            AutoHelper.DriveForward(
+                    robot,
+                    DistanceToCubeTotal,
+                    1000);
+
+            AutoHelper.DriveBackward(
+                    robot,
+                    DistanceToBackoff,
+                    1000);
         }
         else
         {
-            AutoHelper.DriveForward(robot, 12, 1000);
-            AutoHelper.StrafeRight(robot, 18, 1000);
-            AutoHelper.DriveForward(robot, 7, 1000);
-            AutoHelper.DriveBackward(robot, 9, 1000);
+            AutoHelper.DriveForward(
+                    robot,
+                    DistanceToCubeInitial,
+                    1000);
+
+            AutoHelper.StrafeRight(
+                    robot,
+                    DistanceToStrafe,
+                    1000);
+
+            AutoHelper.DriveForward(
+                    robot,
+                    DistanceToCubeTotal - DistanceToCubeInitial,
+                    1000);
+
+            AutoHelper.DriveBackward(
+                    robot,
+                    DistanceToBackoff,
+                    1000);
         }
 
         // get to the end of the perimeter fence

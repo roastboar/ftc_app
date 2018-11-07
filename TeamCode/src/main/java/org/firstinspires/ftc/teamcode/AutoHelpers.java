@@ -190,6 +190,7 @@ public class AutoHelpers
     public double GetGoldMineralPosition(HardwareMap hardwareMap, long SleepTime)
     {
         GoldAlignDetector detector;
+        double XPosition;
 
         // telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
@@ -218,6 +219,9 @@ public class AutoHelpers
         // Sleep to allow it to calibrate
         HelperSleep(SleepTime);
 
-        return detector.getXPosition();
+        XPosition = detector.getXPosition();
+        detector.disable();
+
+        return XPosition;
     }
 }
