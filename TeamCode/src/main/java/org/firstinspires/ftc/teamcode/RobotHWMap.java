@@ -58,6 +58,7 @@ public class RobotHWMap {
     public DcMotor motorFrontRight = null;
     public DcMotor motorBackLeft = null;
     public DcMotor motorBackRight = null;
+    public DcMotor motorPivot = null;
  //   public DcMotor motorArm = null;
  //   public DcMotor motorExtend = null;
     //public Servo colorServo = null;
@@ -93,12 +94,8 @@ public class RobotHWMap {
         motorFrontRight = hwMap.get(DcMotor.class, "motorFrontRight");
         motorBackLeft = hwMap.get(DcMotor.class, "motorBackLeft");
         motorBackRight = hwMap.get(DcMotor.class, "motorBackRight");
-        //motorArm = hwMap.get(DcMotor.class, "motorArm");
-        //motorExtend = hwMap.get(DcMotor.class,"motorExtend");
-
-
-        robotClaw = hwMap.get(Servo.class, "robotClaw");
         motorLift = hwMap.get(DcMotor.class, "motorLift");
+        motorPivot = hwMap.get(DcMotor.class, "motorArm");
 
         // Set drive motors to appropriate directions
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
@@ -117,6 +114,7 @@ public class RobotHWMap {
         //motorArm.setPower(0);
         //motorExtend.setPower(0);
         motorLift.setPower(0);
+        motorPivot.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -127,7 +125,7 @@ public class RobotHWMap {
         //motorArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //motorExtend.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        motorPivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     // Define and initialize ALL installed servos.
