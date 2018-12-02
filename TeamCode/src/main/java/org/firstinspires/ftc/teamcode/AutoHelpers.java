@@ -246,12 +246,16 @@ public class AutoHelpers
         // disengage the robot from the central lander
         DriveForward(robot, 3, SleepTime);
 
+        /*
         int DistanceToCubeTotal = 29;
         int DistanceToCubeInitial = 12;
         int DistanceToStrafe = 18;
         int DistanceToBackoff = 19;
+        */
 
         int DistanceToTurn = 31;
+        int DistanceToPerimeter = 3;
+        int DistanceToCrater = 6;
 
         // move away from lander
         StrafeLeft(
@@ -284,7 +288,7 @@ public class AutoHelpers
             // go to the end of the fence
             DriveBackward(
                     robot,
-                    30,
+                    DistanceToPerimeter + 30,
                     SleepTime);
 
             // turn so that you are aligned to the perimeter fence
@@ -296,7 +300,7 @@ public class AutoHelpers
             // move to the depot
             DriveForward(
                     robot,
-                    38,
+                    DistanceToCrater + 38,
                     SleepTime);
 
             //open the claw
@@ -330,7 +334,7 @@ public class AutoHelpers
             // go to the end of the fence
             DriveBackward(
                     robot,
-                    47,
+                    DistanceToPerimeter + 47,
                     SleepTime);
 
             // turn so that you are aligned to the perimeter fence
@@ -342,7 +346,7 @@ public class AutoHelpers
             // move to the depot
             DriveForward(
                     robot,
-                    38,
+                    DistanceToCrater + 38,
                     SleepTime);
 
             //open the claw
@@ -374,7 +378,7 @@ public class AutoHelpers
             // go to the end of the fence
             DriveBackward(
                     robot,
-                    61,
+                    DistanceToPerimeter + 61,
                     SleepTime);
 
             // turn so that you are aligned to the perimeter fence
@@ -386,7 +390,7 @@ public class AutoHelpers
             // move to the depot
             DriveForward(
                     robot,
-                    38,
+                    DistanceToCrater + 38,
                     SleepTime);
 
             //open the claw
