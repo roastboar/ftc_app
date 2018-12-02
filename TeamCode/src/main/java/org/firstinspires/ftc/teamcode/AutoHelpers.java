@@ -87,21 +87,31 @@ public class AutoHelpers
         robot.motorBackRight.setPower(value);
     }
 
-    public void DescendRobot(RobotHWMap robot)
+    public void DescendRobot(RobotHWMap robot, long SleepTime)
     {
         int Ticks;
         double Inches = 6.5;
 
         robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Ticks = InchesToTicks(Inches);
-        //robot.motorLift.setTargetPosition(Ticks);
+        robot.motorLift.setTargetPosition(Ticks);
+        SetMotorPower(robot, 1);
+        WaitForMotors(robot);
+        SetMotorPower(robot, 0);
+        HelperSleep(SleepTime);
+
+        /*
+        //
+        // this was used for rack and pinion gear
+        //
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLift.setPower(-0.75);
-        //
-        // 4475 -- 4750
-        //
-        HelperSleep(4600);
+        HelperSleep(4600); // 4475 -- 4750
         robot.motorLift.setPower(0);
+        */
     }
 
     public void StrafeLeft(RobotHWMap Robot, double Inches, long SleepTime)

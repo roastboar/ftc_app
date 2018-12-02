@@ -50,6 +50,8 @@ public class AutoFacingCrater extends LinearOpMode
 
         waitForStart();
 
+        AutoHelper.DescendRobot(robot, SleepTime);
+
         double XPosition;
         XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
 

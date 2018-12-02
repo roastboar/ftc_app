@@ -47,10 +47,11 @@ public class AutoFacingDepot extends LinearOpMode
 
         robot.init(hardwareMap);
 
-
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
+
+        AutoHelper.DescendRobot(robot, SleepTime);
 
         double XPosition;
         XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
