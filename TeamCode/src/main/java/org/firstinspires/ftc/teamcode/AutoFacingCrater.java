@@ -94,6 +94,24 @@ public class AutoFacingCrater extends LinearOpMode
                     robot,
                     30,
                     SleepTime);
+
+            // turn so that you are aligned to the perimeter fence
+            AutoHelper.TurnRight(
+                    robot,
+                    33,
+                    SleepTime);
+
+            // move to the depot
+            AutoHelper.DriveForward(
+                    robot,
+                    38,
+                    SleepTime);
+
+            //open the claw
+            robot.robotClaw.setPosition(0);
+
+            // drive to the crater
+            AutoHelper.DriveBackward(robot, 57, SleepTime);
         }
         else if (XPosition >=150 && XPosition <=390)
         {
@@ -122,6 +140,24 @@ public class AutoFacingCrater extends LinearOpMode
                     robot,
                     47,
                     SleepTime);
+
+            // turn so that you are aligned to the perimeter fence
+            AutoHelper.TurnRight(
+                    robot,
+                    33,
+                    SleepTime);
+
+            // move to the depot
+            AutoHelper.DriveForward(
+                    robot,
+                    38,
+                    SleepTime);
+
+            //open the claw
+            robot.robotClaw.setPosition(0);
+
+            // drive to the crater
+            AutoHelper.DriveBackward(robot, 57, SleepTime);
         }
         else
         {
@@ -148,24 +184,24 @@ public class AutoFacingCrater extends LinearOpMode
                     robot,
                     61,
                     SleepTime);
+
+            // turn so that you are aligned to the perimeter fence
+            AutoHelper.TurnRight(
+                    robot,
+                    33,
+                    SleepTime);
+
+            // move to the depot
+            AutoHelper.DriveForward(
+                    robot,
+                    38,
+                    SleepTime);
+
+            //open the claw
+            robot.robotClaw.setPosition(0);
+
+            // drive to the crater
+            AutoHelper.DriveBackward(robot, 57, SleepTime);
         }
-
-        // turn so that you are aligned to the perimeter fence
-        AutoHelper.TurnRight(
-                robot,
-                33,
-                SleepTime);
-
-        // move to the depot
-        AutoHelper.DriveForward(
-                robot,
-                38,
-                SleepTime);
-
-        //open the claw
-        robot.robotClaw.setPosition(0);
-
-        // drive to the crater
-        AutoHelper.DriveBackward(robot, 57, SleepTime);
     }
 }
