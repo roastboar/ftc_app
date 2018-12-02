@@ -94,7 +94,7 @@ public class AutoHelpers
 
         robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-
+/*
         robot.motorLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Ticks = InchesToTicks(Inches);
         robot.motorLift.setTargetPosition(Ticks);
@@ -102,16 +102,17 @@ public class AutoHelpers
         WaitForMotors(robot);
         SetMotorPower(robot, 0);
         HelperSleep(SleepTime);
-
-        /*
+*/
         //
         // this was used for rack and pinion gear
         //
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorLift.setPower(-0.75);
-        HelperSleep(4600); // 4475 -- 4750
+        robot.motorLift.setPower(-1);
+
+        // 4475 -- 4750
+
+        HelperSleep(15000);
         robot.motorLift.setPower(0);
-        */
     }
 
     public void StrafeLeft(RobotHWMap Robot, double Inches, long SleepTime)
