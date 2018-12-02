@@ -65,9 +65,9 @@ public class Mecanum extends LinearOpMode
             robot.motorBackRight.setPower(drive + strafe - rotate);
 
             // Control arm motors
-            //robot.motorLift.setPower(gamepad2.left_stick_y);
-            robot.motorPivot.setPower(gamepad2.left_stick_y);
-            robot.motorExtend.setPower(gamepad2.right_stick_y);
+            robot.motorLift.setPower(gamepad2.left_stick_y);
+            //robot.motorPivot.setPower(gamepad2.left_stick_y);
+            //robot.motorExtend.setPower(gamepad2.right_stick_y);
 
             /*if(gamepad1.a)
             {

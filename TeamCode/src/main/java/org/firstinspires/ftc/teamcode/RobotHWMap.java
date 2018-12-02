@@ -62,7 +62,7 @@ public class RobotHWMap {
     public DcMotor motorPivot = null;
     public DcMotor motorExtend = null;
 
-//    public Servo robotClaw = null;
+    public Servo robotClaw = null;
     
 //    public ColorSensor colorSensor = null;
 
@@ -92,6 +92,9 @@ public class RobotHWMap {
         motorLift = hwMap.get(DcMotor.class, "motorLift");
         motorPivot = hwMap.get(DcMotor.class, "motorPivot");
         motorExtend = hwMap.get(DcMotor.class,"motorExtend");
+
+        robotClaw = hwMap.get(Servo.class, "robotClaw");
+        robotClaw.setPosition(1);
 
         // Set drive motors to appropriate directions
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward

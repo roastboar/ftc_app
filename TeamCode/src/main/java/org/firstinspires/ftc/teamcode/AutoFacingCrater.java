@@ -46,7 +46,7 @@ public class AutoFacingCrater extends LinearOpMode
         robot.init(hardwareMap);
 
         // close the claw servo
-        robot.robotClaw.setPosition(0.8);
+        //robot.robotClaw.setPosition(0.8);
 
         AutoHelper.ResetEncoders(robot);
 
@@ -82,7 +82,7 @@ public class AutoFacingCrater extends LinearOpMode
         AutoHelper.DriveForward(robot, 50, 1000);
 
         // open the claw
-        robot.robotClaw.setPosition(0);
+        //robot.robotClaw.setPosition(0);
 
         // drive to the crater
         AutoHelper.DriveBackward(robot, 81, 1000); //76 too short

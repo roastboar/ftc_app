@@ -55,14 +55,11 @@ public class AutoFacingDepot extends LinearOpMode
         // close the claw servo
         //robot.robotClaw.setPosition(0.8);
 
-        // descend the robot
-        //AutoHelper.DescendRobot(robot);
-
         double XPosition;
         XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
 
         // disengage the robot from the central lander
-        AutoHelper.StrafeRight(robot, 4, 1000);
+        AutoHelper.DriveForward(robot, 3, 1000);
 
         int DistanceToCubeTotal = 29;
         int DistanceToCubeInitial = 12;
@@ -71,76 +68,121 @@ public class AutoFacingDepot extends LinearOpMode
 
         if (XPosition < 150)
         {
-            // Left
-            AutoHelper.DriveForward(
-                    robot,
-                    DistanceToCubeInitial,
-                    1000);
+            // Left side
 
+            // move away from lander
             AutoHelper.StrafeLeft(
                     robot,
-                    DistanceToStrafe,
+                    12,
                     1000);
 
-            AutoHelper.DriveForward(
-                    robot,
-                    DistanceToCubeTotal - DistanceToCubeInitial,
-                    1000);
-
+            // move to cube
             AutoHelper.DriveBackward(
                     robot,
-                    DistanceToBackoff,
+                    17,
                     1000);
+
+            // knock cube
+            AutoHelper.StrafeLeft(
+                    robot,
+                    15,
+                    1000);
+
+            // move away from cube
+            AutoHelper.StrafeRight(
+                    robot,
+                    16,
+                    1000);
+
+            // go to the end of the fence
+            AutoHelper.DriveBackward(
+                    robot,
+                    32,
+                    1000);
+
         }
         else if (XPosition >=150 && XPosition <=390)
         {
             // Center
-            AutoHelper.DriveForward(
+
+            // move away from lander
+            AutoHelper.StrafeLeft(
                     robot,
-                    DistanceToCubeTotal,
+                    12,
                     1000);
 
+            // move to cube
             AutoHelper.DriveBackward(
                     robot,
-                    DistanceToBackoff,
+                    5,
+                    1000);
+
+            // knock off cube
+            AutoHelper.StrafeLeft(
+                    robot,
+                    15,
+                    1000);
+
+            // move away from cube
+            AutoHelper.StrafeRight(
+                    robot,
+                    16,
+                    1000);
+
+            // go to the end of the fence
+            AutoHelper.DriveBackward(
+                    robot,
+                    47,
                     1000);
         }
         else
         {
-            AutoHelper.DriveForward(
+            // come forward
+            AutoHelper.StrafeLeft(
                     robot,
-                    DistanceToCubeInitial,
+                    12,
                     1000);
 
+            // move to the cube
+            AutoHelper.DriveForward(
+                    robot,
+                    11,
+                    1000);
+
+            // knock off the cube
+            AutoHelper.StrafeLeft(
+                    robot,
+                    15,
+                    1000);
+
+            // move away from cube
             AutoHelper.StrafeRight(
                     robot,
-                    DistanceToStrafe,
+                    16,
                     1000);
 
-            AutoHelper.DriveForward(
-                    robot,
-                    DistanceToCubeTotal - DistanceToCubeInitial,
-                    1000);
-
+            // go to the end of the fence
             AutoHelper.DriveBackward(
                     robot,
-                    DistanceToBackoff,
+                    60,
                     1000);
         }
 
-        // get to the end of the perimeter fence
-        //AutoHelper.StrafeRight(robot, 35, 1000);
-
         // turn so that you are aligned to the perimeter fence
-        //AutoHelper.TurnLeft(robot, 10, 1000);
+        AutoHelper.TurnLeft(
+                robot, 14,
+                1000);
 
-        // drive to the depot
-        //AutoHelper.DriveForward(robot, 50, 1000);
+        // move to the depot
+        AutoHelper.DriveForward(
+                robot,
+                49,
+                1000);
 
-        // open the claw
+        //open the claw
         robot.robotClaw.setPosition(0);
 
         // drive to the crater
-        //AutoHelper.DriveBackward(robot, 81, 1000); //76 too short
+        AutoHelper.DriveBackward(robot, 57, 1000);
     }
 }
