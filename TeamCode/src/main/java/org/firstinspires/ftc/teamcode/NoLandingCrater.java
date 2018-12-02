@@ -32,9 +32,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name="Crater")
+@Autonomous(name="NoLandingCrater")
 
-public class Crater extends LinearOpMode
+public class NoLandingCrater extends LinearOpMode
 {
     /* Declare OpMode members. */
     RobotHWMap robot = new RobotHWMap();
@@ -47,9 +47,6 @@ public class Crater extends LinearOpMode
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
-
-        AutoHelper.DescendRobot(robot);
         AutoHelper.Crater(robot, hardwareMap);
-
     }
 }
