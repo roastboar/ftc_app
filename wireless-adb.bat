@@ -11,12 +11,12 @@ echo Enabling Wireless ADB
 adb tcpip 5555
 REM adb devices
 REM adb shell ifconfig
-adb enable 192.168.49.1:5555
+adb connect 192.168.49.1:5555
 goto Done
 
 :disable
 echo Disabling Wireless ADB
-adb disable
+adb disconnect
 goto Done
 
 :Usage
