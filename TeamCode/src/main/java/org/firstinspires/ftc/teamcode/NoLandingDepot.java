@@ -32,9 +32,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name="Depot")
+@Autonomous(name="NoLandingDepot")
 
-public class Depot extends LinearOpMode
+public class NoLandingDepot extends LinearOpMode
 {
     /* Declare OpMode members. */
     RobotHWMap robot = new RobotHWMap();

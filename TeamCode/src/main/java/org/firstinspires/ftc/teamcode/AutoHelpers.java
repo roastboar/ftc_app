@@ -251,6 +251,8 @@ public class AutoHelpers
         int DistanceToStrafe = 18;
         int DistanceToBackoff = 19;
 
+        int DistanceToTurn = 31;
+
         // move away from lander
         StrafeLeft(
                 robot,
@@ -288,7 +290,7 @@ public class AutoHelpers
             // turn so that you are aligned to the perimeter fence
             TurnRight(
                     robot,
-                    33,
+                    DistanceToTurn,
                     SleepTime);
 
             // move to the depot
@@ -334,7 +336,7 @@ public class AutoHelpers
             // turn so that you are aligned to the perimeter fence
             TurnRight(
                     robot,
-                    33,
+                    DistanceToTurn,
                     SleepTime);
 
             // move to the depot
@@ -378,13 +380,170 @@ public class AutoHelpers
             // turn so that you are aligned to the perimeter fence
             TurnRight(
                     robot,
-                    33,
+                    DistanceToTurn,
                     SleepTime);
 
             // move to the depot
             DriveForward(
                     robot,
                     38,
+                    SleepTime);
+
+            //open the claw
+            robot.robotClaw.setPosition(0);
+
+            // drive to the crater
+            DriveBackward(robot, 57, SleepTime);
+        }
+    }
+
+    public void Depot(RobotHWMap robot, HardwareMap hardwareMap)
+    {
+        double XPosition;
+        long SleepTime = 100;
+
+        XPosition = GetGoldMineralPosition(hardwareMap);
+
+        // disengage the robot from the central lander
+        DriveForward(robot, 3, SleepTime);
+
+        int DistanceToCubeTotal = 29;
+        int DistanceToCubeInitial = 12;
+        int DistanceToStrafe = 18;
+        int DistanceToBackoff = 19;
+
+        // move away from lander
+        StrafeLeft(
+                robot,
+                12,
+                SleepTime);
+
+        if (XPosition < 150)
+        {
+            // Left side
+
+            // move to cube
+            DriveBackward(
+                    robot,
+                    17,
+                    SleepTime);
+
+            // knock cube
+            StrafeLeft(
+                    robot,
+                    12,
+                    SleepTime);
+
+            // move away from cube
+            StrafeRight(
+                    robot,
+                    13,
+                    SleepTime);
+
+            // go to the end of the fence
+            DriveBackward(
+                    robot,
+                    32,
+                    SleepTime);
+
+            // turn so that you are aligned to the perimeter fence
+            TurnLeft(
+                    robot, 14,
+                    SleepTime);
+
+            // move to the depot
+            DriveForward(
+                    robot,
+                    49,
+                    SleepTime);
+
+            //open the claw
+            robot.robotClaw.setPosition(0);
+
+            // drive to the crater
+            DriveBackward(robot, 59, SleepTime);
+
+        }
+        else if (XPosition >=150 && XPosition <=390)
+        {
+            // Center
+
+            // move to cube
+            DriveBackward(
+                    robot,
+                    5,
+                    SleepTime);
+
+            // knock off cube
+            StrafeLeft(
+                    robot,
+                    12,
+                    SleepTime);
+
+            // move away from cube
+            StrafeRight(
+                    robot,
+                    13,
+                    SleepTime);
+
+            // go to the end of the fence
+            DriveBackward(
+                    robot,
+                    47,
+                    SleepTime);
+
+            // turn so that you are aligned to the perimeter fence
+            TurnLeft(
+                    robot, 14,
+                    SleepTime);
+
+            // move to the depot
+            DriveForward(
+                    robot,
+                    49,
+                    SleepTime);
+
+            //open the claw
+            robot.robotClaw.setPosition(0);
+
+            // drive to the crater
+            DriveBackward(robot, 57, SleepTime);
+        }
+        else
+        {
+            // move to the cube
+            DriveForward(
+                    robot,
+                    11,
+                    SleepTime);
+
+            // knock off the cube
+            StrafeLeft(
+                    robot,
+                    12,
+                    SleepTime);
+
+            // move away from cube
+            StrafeRight(
+                    robot,
+                    13,
+                    SleepTime);
+
+            // go to the end of the fence
+            DriveBackward(
+                    robot,
+                    60,
+                    SleepTime);
+
+            // turn so that you are aligned to the perimeter fence
+            TurnLeft(
+                    robot, 14,
+                    SleepTime);
+
+            // move to the depot
+            DriveForward(
+                    robot,
+                    49,
                     SleepTime);
 
             //open the claw
