@@ -43,7 +43,7 @@ public class Depot extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        long SleepTime = 250;
+        long SleepTime = 100;
 
         robot.init(hardwareMap);
 
@@ -51,7 +51,7 @@ public class Depot extends LinearOpMode
 
         waitForStart();
 
-        AutoHelper.DescendRobot(robot, SleepTime);
+        AutoHelper.DescendRobot(robot);
 
         double XPosition;
         XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap);

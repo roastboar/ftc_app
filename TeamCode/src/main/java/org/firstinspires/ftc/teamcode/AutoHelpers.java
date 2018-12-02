@@ -87,7 +87,7 @@ public class AutoHelpers
         robot.motorBackRight.setPower(value);
     }
 
-    public void DescendRobot(RobotHWMap robot, long SleepTime)
+    public void DescendRobot(RobotHWMap robot)
     {
         int Ticks;
         double Inches = 6.5;

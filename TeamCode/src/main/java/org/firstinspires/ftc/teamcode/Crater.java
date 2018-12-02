@@ -43,14 +43,14 @@ public class Crater extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        long SleepTime = 500;
+        long SleepTime = 100;
 
         robot.init(hardwareMap);
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
 
-        AutoHelper.DescendRobot(robot, SleepTime);
+        AutoHelper.DescendRobot(robot);
 
         double XPosition;
         XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap);
