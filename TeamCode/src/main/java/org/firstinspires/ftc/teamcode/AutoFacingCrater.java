@@ -44,47 +44,128 @@ public class AutoFacingCrater extends LinearOpMode
     public void runOpMode()
     {
         robot.init(hardwareMap);
-
-        // close the claw servo
-        //robot.robotClaw.setPosition(0.8);
-
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
 
-        // close the claw servo
-        //robot.robotClaw.setPosition(0.8);
-
-        // descend the robot
-        AutoHelper.DescendRobot(robot);
+        double XPosition;
+        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
 
         // disengage the robot from the central lander
-        AutoHelper.StrafeRight(robot, 4, 1000);
+        AutoHelper.DriveForward(robot, 3, 1000);
 
+        int DistanceToCubeTotal = 29;
+        int DistanceToCubeInitial = 12;
+        int DistanceToStrafe = 18;
+        int DistanceToBackoff = 19;
 
+        // move away from lander
+        AutoHelper.StrafeLeft(
+                robot,
+                12,
+                1000);
 
-        // drive forward till we reach the minerals
-        AutoHelper.DriveForward(robot, 16,1000);
+        if (XPosition < 150)
+        {
+            // Left side
 
+            // move to cube
+            AutoHelper.DriveBackward(
+                    robot,
+                    17,
+                    1000);
 
-        // strafe to get to the first mineral
-        //AutoHelper.StrafeRight(robot, 11, 1000);
+            // knock cube
+            AutoHelper.StrafeLeft(
+                    robot,
+                    12,
+                    1000);
 
-        //AutoHelper.KnockOffGold(hardwareMap, robot, telemetry);
+            // move away from cube
+            AutoHelper.StrafeRight(
+                    robot,
+                    13,
+                    1000);
 
-        // get to the end of the perimeter fence
-        AutoHelper.StrafeRight(robot, 35, 1000);
+            // go to the end of the fence
+            AutoHelper.DriveBackward(
+                    robot,
+                    30,
+                    1000);
+
+        }
+        else if (XPosition >=150 && XPosition <=390)
+        {
+            // Center
+
+            // move to cube
+            AutoHelper.DriveBackward(
+                    robot,
+                    5,
+                    1000);
+
+            // knock off cube
+            AutoHelper.StrafeLeft(
+                    robot,
+                    12,
+                    1000);
+
+            // move away from cube
+            AutoHelper.StrafeRight(
+                    robot,
+                    13,
+                    1000);
+
+            // go to the end of the fence
+            AutoHelper.DriveBackward(
+                    robot,
+                    47,
+                    1000);
+        }
+        else
+        {
+            // move to the cube
+            AutoHelper.DriveForward(
+                    robot,
+                    11,
+                    1000);
+
+            // knock off the cube
+            AutoHelper.StrafeLeft(
+                    robot,
+                    12,
+                    1000);
+
+            // move away from cube
+            AutoHelper.StrafeRight(
+                    robot,
+                    13,
+                    1000);
+
+            // go to the end of the fence
+            AutoHelper.DriveBackward(
+                    robot,
+                    60,
+                    1000);
+        }
 
         // turn so that you are aligned to the perimeter fence
-        AutoHelper.TurnLeft(robot, 10, 1000);
+        AutoHelper.TurnRight(
+                robot,
+                35,
+                1000);
+/*
+        // move to the depot
+        AutoHelper.DriveForward(
+                robot,
+                38,
+                1000);
 
-        // drive to the depot
-        AutoHelper.DriveForward(robot, 50, 1000);
-
-        // open the claw
-        //robot.robotClaw.setPosition(0);
+        //open the claw
+        robot.robotClaw.setPosition(0);
 
         // drive to the crater
-        AutoHelper.DriveBackward(robot, 81, 1000); //76 too short
+        AutoHelper.DriveBackward(robot, 57, 1000);
+        */
     }
 }

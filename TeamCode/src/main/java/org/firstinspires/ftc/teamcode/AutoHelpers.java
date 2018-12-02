@@ -184,7 +184,7 @@ public class AutoHelpers
 
     public void TurnRight(RobotHWMap robot, double inches, long SleepTime)
     {
-        TurnLeft(robot, inches, SleepTime);
+        TurnLeft(robot, -inches, SleepTime);
     }
 
     public double GetGoldMineralPosition(HardwareMap hardwareMap, long SleepTime)

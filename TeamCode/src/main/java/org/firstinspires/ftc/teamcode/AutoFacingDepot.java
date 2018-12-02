@@ -66,15 +66,15 @@ public class AutoFacingDepot extends LinearOpMode
         int DistanceToStrafe = 18;
         int DistanceToBackoff = 19;
 
+        // move away from lander
+        AutoHelper.StrafeLeft(
+                robot,
+                12,
+                1000);
+
         if (XPosition < 150)
         {
             // Left side
-
-            // move away from lander
-            AutoHelper.StrafeLeft(
-                    robot,
-                    12,
-                    1000);
 
             // move to cube
             AutoHelper.DriveBackward(
@@ -85,13 +85,13 @@ public class AutoFacingDepot extends LinearOpMode
             // knock cube
             AutoHelper.StrafeLeft(
                     robot,
-                    15,
+                    12,
                     1000);
 
             // move away from cube
             AutoHelper.StrafeRight(
                     robot,
-                    16,
+                    13,
                     1000);
 
             // go to the end of the fence
@@ -105,12 +105,6 @@ public class AutoFacingDepot extends LinearOpMode
         {
             // Center
 
-            // move away from lander
-            AutoHelper.StrafeLeft(
-                    robot,
-                    12,
-                    1000);
-
             // move to cube
             AutoHelper.DriveBackward(
                     robot,
@@ -120,13 +114,13 @@ public class AutoFacingDepot extends LinearOpMode
             // knock off cube
             AutoHelper.StrafeLeft(
                     robot,
-                    15,
+                    12,
                     1000);
 
             // move away from cube
             AutoHelper.StrafeRight(
                     robot,
-                    16,
+                    13,
                     1000);
 
             // go to the end of the fence
@@ -137,12 +131,6 @@ public class AutoFacingDepot extends LinearOpMode
         }
         else
         {
-            // come forward
-            AutoHelper.StrafeLeft(
-                    robot,
-                    12,
-                    1000);
-
             // move to the cube
             AutoHelper.DriveForward(
                     robot,
@@ -152,13 +140,13 @@ public class AutoFacingDepot extends LinearOpMode
             // knock off the cube
             AutoHelper.StrafeLeft(
                     robot,
-                    15,
+                    12,
                     1000);
 
             // move away from cube
             AutoHelper.StrafeRight(
                     robot,
-                    16,
+                    13,
                     1000);
 
             // go to the end of the fence
