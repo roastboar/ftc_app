@@ -198,10 +198,11 @@ public class AutoHelpers
         TurnLeft(robot, -inches, SleepTime);
     }
 
-    public double GetGoldMineralPosition(HardwareMap hardwareMap, long SleepTime)
+    public double GetGoldMineralPosition(HardwareMap hardwareMap)
     {
         GoldAlignDetector detector;
         double XPosition;
+        long SleepTime = 2000;
 
         // telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 

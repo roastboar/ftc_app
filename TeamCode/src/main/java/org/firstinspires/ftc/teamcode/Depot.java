@@ -54,7 +54,7 @@ public class Depot extends LinearOpMode
         AutoHelper.DescendRobot(robot, SleepTime);
 
         double XPosition;
-        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 1500);
+        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap);
 
         // disengage the robot from the central lander
         AutoHelper.DriveForward(robot, 3, SleepTime);
