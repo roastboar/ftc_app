@@ -18,8 +18,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
-@TeleOp(name = "Mecanum")
-public class Mecanum extends LinearOpMode
+@TeleOp(name = "Manual")
+public class Manual extends LinearOpMode
 {
     /* Declare OpMode members. */
     RobotHWMap robot   = new RobotHWMap();   // Use a Pushbot's hardware

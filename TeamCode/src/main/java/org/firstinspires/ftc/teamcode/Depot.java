@@ -32,9 +32,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name="Auto Facing Crater")
+@Autonomous(name="Depot")
 
-public class AutoFacingCrater extends LinearOpMode
+public class Depot extends LinearOpMode
 {
     /* Declare OpMode members. */
     RobotHWMap robot = new RobotHWMap();
@@ -43,9 +43,10 @@ public class AutoFacingCrater extends LinearOpMode
     @Override
     public void runOpMode()
     {
-        long SleepTime = 500;
+        long SleepTime = 250;
 
         robot.init(hardwareMap);
+
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
@@ -53,7 +54,7 @@ public class AutoFacingCrater extends LinearOpMode
         AutoHelper.DescendRobot(robot, SleepTime);
 
         double XPosition;
-        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
+        XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 1500);
 
         // disengage the robot from the central lander
         AutoHelper.DriveForward(robot, 3, SleepTime);
@@ -94,26 +95,26 @@ public class AutoFacingCrater extends LinearOpMode
             // go to the end of the fence
             AutoHelper.DriveBackward(
                     robot,
-                    30,
+                    32,
                     SleepTime);
 
             // turn so that you are aligned to the perimeter fence
-            AutoHelper.TurnRight(
-                    robot,
-                    33,
+            AutoHelper.TurnLeft(
+                    robot, 14,
                     SleepTime);
 
             // move to the depot
             AutoHelper.DriveForward(
                     robot,
-                    38,
+                    49,
                     SleepTime);
 
             //open the claw
             robot.robotClaw.setPosition(0);
 
             // drive to the crater
-            AutoHelper.DriveBackward(robot, 57, SleepTime);
+            AutoHelper.DriveBackward(robot, 59, SleepTime);
+
         }
         else if (XPosition >=150 && XPosition <=390)
         {
@@ -144,15 +145,14 @@ public class AutoFacingCrater extends LinearOpMode
                     SleepTime);
 
             // turn so that you are aligned to the perimeter fence
-            AutoHelper.TurnRight(
-                    robot,
-                    33,
+            AutoHelper.TurnLeft(
+                    robot, 14,
                     SleepTime);
 
             // move to the depot
             AutoHelper.DriveForward(
                     robot,
-                    38,
+                    49,
                     SleepTime);
 
             //open the claw
@@ -184,19 +184,18 @@ public class AutoFacingCrater extends LinearOpMode
             // go to the end of the fence
             AutoHelper.DriveBackward(
                     robot,
-                    61,
+                    60,
                     SleepTime);
 
             // turn so that you are aligned to the perimeter fence
-            AutoHelper.TurnRight(
-                    robot,
-                    33,
+            AutoHelper.TurnLeft(
+                    robot, 14,
                     SleepTime);
 
             // move to the depot
             AutoHelper.DriveForward(
                     robot,
-                    38,
+                    49,
                     SleepTime);
 
             //open the claw
