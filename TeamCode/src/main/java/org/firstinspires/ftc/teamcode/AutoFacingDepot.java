@@ -47,15 +47,10 @@ public class AutoFacingDepot extends LinearOpMode
 
         robot.init(hardwareMap);
 
-        // close the claw servo
-        //robot.robotClaw.setPosition(0.8);
 
         AutoHelper.ResetEncoders(robot);
 
         waitForStart();
-
-        // close the claw servo
-        //robot.robotClaw.setPosition(0.8);
 
         double XPosition;
         XPosition = AutoHelper.GetGoldMineralPosition(hardwareMap, 3000);
@@ -208,7 +203,5 @@ public class AutoFacingDepot extends LinearOpMode
             // drive to the crater
             AutoHelper.DriveBackward(robot, 57, SleepTime);
         }
-
-
     }
 }
