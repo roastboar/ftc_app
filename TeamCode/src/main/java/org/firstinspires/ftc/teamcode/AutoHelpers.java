@@ -109,9 +109,7 @@ public class AutoHelpers
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLift.setPower(-1);
 
-        // 4475 -- 4750
-
-        HelperSleep(15000);
+        HelperSleep(10000);
         robot.motorLift.setPower(0);
     }
 
@@ -253,9 +251,8 @@ public class AutoHelpers
         int DistanceToBackoff = 19;
         */
 
-        int DistanceToTurn = 31;
+        int DistanceToTurn = 32; // Was 31
         int DistanceToPerimeter = 3;
-        int DistanceToCrater = 6;
 
         // move away from lander
         StrafeLeft(
@@ -290,24 +287,6 @@ public class AutoHelpers
                     robot,
                     DistanceToPerimeter + 30,
                     SleepTime);
-
-            // turn so that you are aligned to the perimeter fence
-            TurnRight(
-                    robot,
-                    DistanceToTurn,
-                    SleepTime);
-
-            // move to the depot
-            DriveForward(
-                    robot,
-                    DistanceToCrater + 38,
-                    SleepTime);
-
-            //open the claw
-            robot.robotClaw.setPosition(0);
-
-            // drive to the crater
-            DriveBackward(robot, 57, SleepTime);
         }
         else if (XPosition >=150 && XPosition <=390)
         {
@@ -336,24 +315,6 @@ public class AutoHelpers
                     robot,
                     DistanceToPerimeter + 47,
                     SleepTime);
-
-            // turn so that you are aligned to the perimeter fence
-            TurnRight(
-                    robot,
-                    DistanceToTurn,
-                    SleepTime);
-
-            // move to the depot
-            DriveForward(
-                    robot,
-                    DistanceToCrater + 38,
-                    SleepTime);
-
-            //open the claw
-            robot.robotClaw.setPosition(0);
-
-            // drive to the crater
-            DriveBackward(robot, 57, SleepTime);
         }
         else
         {
@@ -380,25 +341,28 @@ public class AutoHelpers
                     robot,
                     DistanceToPerimeter + 61,
                     SleepTime);
-
-            // turn so that you are aligned to the perimeter fence
-            TurnRight(
-                    robot,
-                    DistanceToTurn,
-                    SleepTime);
-
-            // move to the depot
-            DriveForward(
-                    robot,
-                    DistanceToCrater + 38,
-                    SleepTime);
-
-            //open the claw
-            robot.robotClaw.setPosition(0);
-
-            // drive to the crater
-            DriveBackward(robot, 57, SleepTime);
         }
+
+        // turn so that you are aligned to the perimeter fence
+        TurnRight(
+                robot,
+                DistanceToTurn,
+                SleepTime);
+
+        // move to the depot
+        DriveForward(
+                robot,
+                38,
+                SleepTime);
+
+        //open the claw
+        robot.robotClaw.setPosition(0.2);
+        HelperSleep(500);
+        robot.robotClaw.setPosition(0.8);
+
+        // drive to the crater
+        DriveBackward(robot, 6 + 57, SleepTime);
+
     }
 
     public void Depot(RobotHWMap robot, HardwareMap hardwareMap)
@@ -462,7 +426,9 @@ public class AutoHelpers
                     SleepTime);
 
             //open the claw
-            robot.robotClaw.setPosition(0);
+            robot.robotClaw.setPosition(0.2);
+            HelperSleep(500);
+            robot.robotClaw.setPosition(0.8);
 
             // drive to the crater
             DriveBackward(robot, 59, SleepTime);
@@ -508,7 +474,9 @@ public class AutoHelpers
                     SleepTime);
 
             //open the claw
-            robot.robotClaw.setPosition(0);
+            robot.robotClaw.setPosition(0.2);
+            HelperSleep(500);
+            robot.robotClaw.setPosition(0.8);
 
             // drive to the crater
             DriveBackward(robot, 57, SleepTime);
@@ -551,7 +519,9 @@ public class AutoHelpers
                     SleepTime);
 
             //open the claw
-            robot.robotClaw.setPosition(0);
+            robot.robotClaw.setPosition(0.2);
+            HelperSleep(500);
+            robot.robotClaw.setPosition(0.8);
 
             // drive to the crater
             DriveBackward(robot, 57, SleepTime);
