@@ -361,8 +361,9 @@ public class AutoHelpers
         robot.robotClaw.setPosition(0.8);
 
         // drive to the crater
-        DriveBackward(robot, 6 + 57, SleepTime);
-
+        DriveBackward(robot, 50, SleepTime);
+        StrafeRight(robot, 2, SleepTime);
+        DriveBackward(robot, 22, SleepTime);
     }
 
     public void Depot(RobotHWMap robot, HardwareMap hardwareMap)

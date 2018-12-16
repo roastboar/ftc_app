@@ -66,25 +66,25 @@ public class Manual extends LinearOpMode
 
             // Control arm motors
             robot.motorLift.setPower(gamepad2.left_stick_y);
-            //robot.motorPivot.setPower(gamepad2.left_stick_y);
-            //robot.motorExtend.setPower(gamepad2.right_stick_y);
+            //robot.motorPivot.setPower(gamepad2.right_stick_y);
 
-            /*if(gamepad1.a)
+            /*if(gamepad2.a)
             {
-                robot.colorServo.setPosition(0.93);
+                robot.motorExtend.setPower(1);
             }
-            if(gamepad1.b)
+            else
             {
-                robot.colorServo.setPosition(0.60);
+                robot.motorExtend.setPower(0);
             }
-            if(gamepad1.x)
+            if(gamepad2.b)
             {
-                robot.robotClaw.setPosition(1);
+                robot.motorExtend.setPower(-1);
             }
-            if(gamepad1.y)
+            else
             {
-                robot.robotClaw.setPosition(0);
-            }
+                robot.motorExtend.setPower(0);
+            }*/
+
 
             /*
 

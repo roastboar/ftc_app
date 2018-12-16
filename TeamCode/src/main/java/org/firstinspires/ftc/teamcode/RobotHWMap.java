@@ -94,7 +94,7 @@ public class RobotHWMap {
         motorExtend = hwMap.get(DcMotor.class,"motorExtend");
 
         robotClaw = hwMap.get(Servo.class, "robotClaw");
-        robotClaw.setPosition(0.8);
+        robotClaw.setPosition(0.9);
 
         // Set drive motors to appropriate directions
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);  //makes robot go forward
