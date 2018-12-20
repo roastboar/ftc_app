@@ -19,76 +19,39 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.lang.Thread;
 import java.util.Locale;
 
-public class AutoHelpers
-{
-    // Encoders measure the amount that the axle on the motor has spun in a unit called 'ticks'.
-    // Each model of motor has a slightly different amount of ticks in a full rotation. By knowing
-    // the size of your wheel and by tracking the amount of ticks your motor has counted, you can
-    // get your distance traveled.
+public class AutoHelpers {
+    private MecanumHelpers Mecanum;
 
-    // For example, if I have a wheel with a diameter of 4 inches, I know that every full rotation
-    // of the wheel will cause me to travel a distance of 12.56 inches (circumference=diameter*pi).
-    // If my motor has 1440 ticks in a rotation, then each tick is 0.00872664625 inches (12.56/1440)
-    // If I want the robot to travel 6 inches, then I tell it to travel for 687 ticks (6/0.0087)
-
-    // Gear reductions just change the amount of ticks per rotation. If I have a 2:1 gear reduction,
-    // then it now takes my 1440 tick/rotation motor 2880 ticks to complete a rotation which would
-    // then be used above..
-
-    private int InchesToTicks(double inches)
-    {
-        // Our wheels are 4"
-        // One rotation will result in a travel of 12.56 inches.
-        // (circumference=diameter*pi)
-
-        // Neverest has 1120 ticks per rotation
-        return (int) (inches/(12.56/1120));
+    AutoHelpers() {
+        Mecanum = new MecanumHelpers();
     }
 
-    public void ResetEncoders(RobotHWMap robot)
-    {
-        robot.motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        /*
-        robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        */
-
-        robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    private void DropTeamMarker(RobotHWMap robot) {
+        //open the claw
+        robot.robotClaw.setPosition(0.2);
+        Mecanum.HelperSleep(500);
+        robot.robotClaw.setPosition(0.8);
     }
 
-    public void WaitForMotors(RobotHWMap robot)
+    private void KnockGoldMineral(RobotHWMap robot)
     {
-        while(
-                (robot.motorFrontLeft.isBusy() &&
-                        robot.motorFrontRight.isBusy() &&
-                        robot.motorBackLeft.isBusy() &&
-                        robot.motorBackRight.isBusy()
-                ))
-//                ) && opModeIsActive())
-        {
-            // nothing
-        }
+        int SleepTime = 100;
+
+        // knock cube
+        Mecanum.StrafeLeft(
+                robot,
+                12,
+                SleepTime);
+
+        // move away from cube
+        Mecanum.StrafeRight(
+                robot,
+                13,
+                SleepTime);
+
     }
 
-    public void SetMotorPower(RobotHWMap robot, int value)
-    {
-        robot.motorFrontLeft.setPower(value);
-        robot.motorFrontRight.setPower(value);
-        robot.motorBackLeft.setPower(value);
-        robot.motorBackRight.setPower(value);
-    }
-
-    public void DescendRobot(RobotHWMap robot)
-    {
+    public void DescendRobot(RobotHWMap robot) {
         int Ticks;
         double Inches = 6.5;
 
@@ -109,95 +72,11 @@ public class AutoHelpers
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLift.setPower(-1);
 
-        HelperSleep(10000);
+        Mecanum.HelperSleep(10000);
         robot.motorLift.setPower(0);
     }
 
-    public void StrafeLeft(RobotHWMap Robot, double Inches, long SleepTime)
-    {
-        int Ticks;
-
-        // for strafing, compensate for the error
-        Inches *= 1.2;
-
-        Ticks = InchesToTicks(Inches);
-
-        ResetEncoders(Robot);
-
-        Robot.motorFrontLeft.setTargetPosition(-Ticks);
-        Robot.motorFrontRight.setTargetPosition(Ticks);
-        Robot.motorBackLeft.setTargetPosition(Ticks);
-        Robot.motorBackRight.setTargetPosition(-Ticks);
-
-        SetMotorPower(Robot, 1);
-        WaitForMotors(Robot);
-        SetMotorPower(Robot, 0);
-
-        HelperSleep(SleepTime);
-    }
-
-    private void HelperSleep(long SleepTime)
-    {
-        try
-        {
-            Thread.sleep(SleepTime);
-        }
-        catch (InterruptedException e)
-        {
-
-        }
-    }
-
-    public void StrafeRight(RobotHWMap robot, double inches, long SleepTime)
-    {
-        StrafeLeft(robot, -inches, SleepTime);
-    }
-
-    public void DriveForward(RobotHWMap robot, double inches, long SleepTime)
-    {
-        int Ticks = InchesToTicks(inches);
-        ResetEncoders(robot);
-
-        robot.motorFrontLeft.setTargetPosition(Ticks);
-        robot.motorFrontRight.setTargetPosition(Ticks);
-        robot.motorBackLeft.setTargetPosition(Ticks);
-        robot.motorBackRight.setTargetPosition(Ticks);
-
-        SetMotorPower(robot, 1);
-        WaitForMotors(robot);
-        SetMotorPower(robot, 0);
-
-        HelperSleep(SleepTime);
-    }
-
-    public void DriveBackward(RobotHWMap robot, double inches, long SleepTime)
-    {
-        DriveForward(robot, -inches, SleepTime);
-    }
-
-    public void TurnLeft(RobotHWMap robot, double inches, long SleepTime)
-    {
-        int Ticks = InchesToTicks(inches);
-        ResetEncoders(robot);
-
-        robot.motorFrontLeft.setTargetPosition(-Ticks);
-        robot.motorFrontRight.setTargetPosition(Ticks);
-        robot.motorBackLeft.setTargetPosition(-Ticks);
-        robot.motorBackRight.setTargetPosition(Ticks);
-
-        SetMotorPower(robot, 1);
-        WaitForMotors(robot);
-        SetMotorPower(robot, 0);
-        HelperSleep(SleepTime);
-    }
-
-    public void TurnRight(RobotHWMap robot, double inches, long SleepTime)
-    {
-        TurnLeft(robot, -inches, SleepTime);
-    }
-
-    public double GetGoldMineralPosition(HardwareMap hardwareMap)
-    {
+    public double GetGoldMineralPosition(HardwareMap hardwareMap) {
         GoldAlignDetector detector;
         double XPosition;
         long SleepTime = 2000;
@@ -227,7 +106,7 @@ public class AutoHelpers
         detector.enable(); // Start the detector!
 
         // Sleep to allow it to calibrate
-        HelperSleep(SleepTime);
+        Mecanum.HelperSleep(SleepTime);
 
         XPosition = detector.getXPosition();
         detector.disable();
@@ -235,83 +114,55 @@ public class AutoHelpers
         return XPosition;
     }
 
-    public void Crater(RobotHWMap robot, HardwareMap hardwareMap)
-    {
+
+    public void Crater(RobotHWMap robot, HardwareMap hardwareMap) {
         double XPosition;
         long SleepTime = 100;
         XPosition = GetGoldMineralPosition(hardwareMap);
 
         // disengage the robot from the central lander
-        DriveForward(robot, 3, SleepTime);
-
-        /*
-        int DistanceToCubeTotal = 29;
-        int DistanceToCubeInitial = 12;
-        int DistanceToStrafe = 18;
-        int DistanceToBackoff = 19;
-        */
+        Mecanum.DriveForward(robot, 3, SleepTime);
 
         int DistanceToTurn = 32; // Was 31
         int DistanceToPerimeter = 3;
 
         // move away from lander
-        StrafeLeft(
+        Mecanum.StrafeLeft(
                 robot,
                 12,
                 SleepTime);
 
-        if (XPosition < 150)
-        {
+        if (XPosition < 150) {
             // Left side
 
             // move to cube
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     17,
                     SleepTime);
 
-            // knock cube
-            StrafeLeft(
-                    robot,
-                    12,
-                    SleepTime);
-
-            // move away from cube
-            StrafeRight(
-                    robot,
-                    13,
-                    SleepTime);
+            KnockGoldMineral(robot);
 
             // go to the end of the fence
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     DistanceToPerimeter + 30,
                     SleepTime);
         }
-        else if (XPosition >=150 && XPosition <=390)
+        else if (XPosition >= 150 && XPosition <= 390)
         {
             // Center
 
             // move to cube
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     5,
                     SleepTime);
 
-            // knock off cube
-            StrafeLeft(
-                    robot,
-                    12,
-                    SleepTime);
-
-            // move away from cube
-            StrafeRight(
-                    robot,
-                    13,
-                    SleepTime);
+            KnockGoldMineral(robot);
 
             // go to the end of the fence
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     DistanceToPerimeter + 47,
                     SleepTime);
@@ -319,52 +170,40 @@ public class AutoHelpers
         else
         {
             // move to the cube
-            DriveForward(
+            Mecanum.DriveForward(
                     robot,
                     11,
                     SleepTime);
 
-            // knock off the cube
-            StrafeLeft(
-                    robot,
-                    12,
-                    SleepTime);
-
-            // move away from cube
-            StrafeRight(
-                    robot,
-                    13,
-                    SleepTime);
+            KnockGoldMineral(robot);
 
             // go to the end of the fence
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     DistanceToPerimeter + 61,
                     SleepTime);
         }
 
         // turn so that you are aligned to the perimeter fence
-        TurnRight(
+        Mecanum.TurnRight(
                 robot,
                 DistanceToTurn,
                 SleepTime);
 
         // move to the depot
-        DriveForward(
+        Mecanum.DriveForward(
                 robot,
                 38,
                 SleepTime);
 
-        //open the claw
-        robot.robotClaw.setPosition(0.2);
-        HelperSleep(500);
-        robot.robotClaw.setPosition(0.8);
+        DropTeamMarker(robot);
 
         // drive to the crater
-        DriveBackward(robot, 50, SleepTime);
-        StrafeRight(robot, 2, SleepTime);
-        DriveBackward(robot, 22, SleepTime);
+        Mecanum.DriveBackward(robot, 50, SleepTime);
+        Mecanum.StrafeRight(robot, 2, SleepTime);
+        Mecanum.DriveBackward(robot, 22, SleepTime);
     }
+
 
     public void Depot(RobotHWMap robot, HardwareMap hardwareMap)
     {
@@ -374,15 +213,10 @@ public class AutoHelpers
         XPosition = GetGoldMineralPosition(hardwareMap);
 
         // disengage the robot from the central lander
-        DriveForward(robot, 3, SleepTime);
-
-        int DistanceToCubeTotal = 29;
-        int DistanceToCubeInitial = 12;
-        int DistanceToStrafe = 18;
-        int DistanceToBackoff = 19;
+        Mecanum.DriveForward(robot, 3, SleepTime);
 
         // move away from lander
-        StrafeLeft(
+        Mecanum.StrafeLeft(
                 robot,
                 12,
                 SleepTime);
@@ -392,140 +226,71 @@ public class AutoHelpers
             // Left side
 
             // move to cube
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     17,
                     SleepTime);
 
-            // knock cube
-            StrafeLeft(
-                    robot,
-                    12,
-                    SleepTime);
-
-            // move away from cube
-            StrafeRight(
-                    robot,
-                    13,
-                    SleepTime);
+            KnockGoldMineral(robot);
 
             // go to the end of the fence
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     32,
                     SleepTime);
-
-            // turn so that you are aligned to the perimeter fence
-            TurnLeft(
-                    robot, 14,
-                    SleepTime);
-
-            // move to the depot
-            DriveForward(
-                    robot,
-                    49,
-                    SleepTime);
-
-            //open the claw
-            robot.robotClaw.setPosition(0.2);
-            HelperSleep(500);
-            robot.robotClaw.setPosition(0.8);
-
-            // drive to the crater
-            DriveBackward(robot, 59, SleepTime);
-
         }
         else if (XPosition >=150 && XPosition <=390)
         {
             // Center
 
             // move to cube
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     5,
                     SleepTime);
 
-            // knock off cube
-            StrafeLeft(
-                    robot,
-                    12,
-                    SleepTime);
-
-            // move away from cube
-            StrafeRight(
-                    robot,
-                    13,
-                    SleepTime);
+            KnockGoldMineral(robot);
 
             // go to the end of the fence
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     47,
                     SleepTime);
 
-            // turn so that you are aligned to the perimeter fence
-            TurnLeft(
-                    robot, 14,
-                    SleepTime);
-
-            // move to the depot
-            DriveForward(
-                    robot,
-                    49,
-                    SleepTime);
-
-            //open the claw
-            robot.robotClaw.setPosition(0.2);
-            HelperSleep(500);
-            robot.robotClaw.setPosition(0.8);
-
-            // drive to the crater
-            DriveBackward(robot, 57, SleepTime);
         }
         else
         {
             // move to the cube
-            DriveForward(
+            Mecanum.DriveForward(
                     robot,
                     11,
                     SleepTime);
 
-            // knock off the cube
-            StrafeLeft(
-                    robot,
-                    12,
-                    SleepTime);
-
-            // move away from cube
-            StrafeRight(
-                    robot,
-                    13,
-                    SleepTime);
+            KnockGoldMineral(robot);
 
             // go to the end of the fence
-            DriveBackward(
+            Mecanum.DriveBackward(
                     robot,
                     60,
                     SleepTime);
 
-            // turn so that you are aligned to the perimeter fence
-            TurnLeft(
-                    robot, 14,
-                    SleepTime);
 
-            // move to the depot
-            DriveForward(
-                    robot,
-                    49,
-                    SleepTime);
-
-            //open the claw
-            robot.robotClaw.setPosition(0.2);
-            HelperSleep(500);
-            robot.robotClaw.setPosition(0.8);
-
-            // drive to the crater
-            DriveBackward(robot, 57, SleepTime);
         }
+
+        // turn so that you are aligned to the perimeter fence
+        Mecanum.TurnLeft(
+                robot, 14,
+                SleepTime);
+
+        // move to the depot
+        Mecanum.DriveForward(
+                robot,
+                49,
+                SleepTime);
+
+        DropTeamMarker(robot);
+
+        // drive to the crater
+        Mecanum.DriveBackward(robot, 59, SleepTime);
     }
 }

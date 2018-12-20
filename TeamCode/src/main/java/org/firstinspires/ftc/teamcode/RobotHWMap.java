@@ -138,4 +138,28 @@ public class RobotHWMap {
         }
         period.reset();
     }
+
+    public void ResetEncoders(RobotHWMap robot)
+    {
+        robot.motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void RunToPosition(RobotHWMap robot)
+    {
+        robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void RunUsingEncoder(RobotHWMap robot)
+    {
+        robot.motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 }

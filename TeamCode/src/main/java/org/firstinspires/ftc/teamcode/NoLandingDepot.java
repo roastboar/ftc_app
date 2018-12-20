@@ -44,10 +44,9 @@ public class NoLandingDepot extends LinearOpMode
     public void runOpMode()
     {
         robot.init(hardwareMap);
-        AutoHelper.ResetEncoders(robot);
+        robot.ResetEncoders(robot);
         waitForStart();
 
-        AutoHelper.DescendRobot(robot);
         AutoHelper.Depot(robot, hardwareMap);
     }
 }

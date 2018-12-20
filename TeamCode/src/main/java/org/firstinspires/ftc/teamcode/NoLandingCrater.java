@@ -44,9 +44,9 @@ public class NoLandingCrater extends LinearOpMode
     public void runOpMode()
     {
         robot.init(hardwareMap);
-        AutoHelper.ResetEncoders(robot);
-
+        robot.ResetEncoders(robot);
         waitForStart();
+
         AutoHelper.Crater(robot, hardwareMap);
     }
 }
