@@ -41,19 +41,6 @@ public class Manual extends LinearOpMode
         waitForStart();
 
         while(opModeIsActive()) {
-//            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-//            double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
-//            double rightX = gamepad1.right_stick_x;
-//            final double v1 = r * Math.cos(robotAngle) - rightX;
-//            final double v2 = r * Math.sin(robotAngle) + rightX;
-//            final double v3 = r * Math.sin(robotAngle) - rightX;
-//            final double v4 = r * Math.cos(robotAngle) + rightX;
-//
-//            robot.motorFrontLeft.setPower(v1);
-//            robot.motorFrontRight.setPower(v2);
-//            robot.motorBackLeft.setPower(v3);
-//            robot.motorBackRight.setPower(v4);
-
             drive = gamepad1.left_stick_y;
             strafe = -gamepad1.left_stick_x;  // Negative because the gamepad is weird
             rotate = -gamepad1.right_stick_x; // Negative because the gamepad is weird
@@ -66,24 +53,20 @@ public class Manual extends LinearOpMode
 
             // Control arm motors
             robot.motorLift.setPower(gamepad2.left_stick_y);
-            //robot.motorPivot.setPower(gamepad2.right_stick_y);
+            robot.motorPivot.setPower(gamepad2.right_stick_y);
 
-            /*if(gamepad2.a)
+            if(gamepad2.a)
             {
                 robot.motorExtend.setPower(1);
             }
-            else
-            {
-                robot.motorExtend.setPower(0);
-            }
-            if(gamepad2.b)
+            else if(gamepad2.b)
             {
                 robot.motorExtend.setPower(-1);
             }
             else
             {
                 robot.motorExtend.setPower(0);
-            }*/
+            }
 
 
             /*
